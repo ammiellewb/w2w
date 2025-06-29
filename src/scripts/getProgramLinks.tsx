@@ -17,6 +17,6 @@ const links = $('td.lst-cl-p_name a')
   })
   .get()
 
-Array.from(new Set(links)).forEach(url => console.log(url))
+fs.writeFileSync('s25-program-links.txt', Array.from(new Set(links)).join('\n'))
 // console.log(`Found ${links.length} programs links`)
 // console.log('---- getProgramLinks script done. ----')

@@ -1,11 +1,10 @@
 "use client" 
 import React, { useState } from 'react';
-import { Search, X, ArrowUpDown, SlidersHorizontal } from "lucide-react"
+import { Search, X, ArrowUpDown, SlidersHorizontal, Bookmark, Share2, HelpCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-export default function Searchbar(){
-    const [searchQuery, setSearchQuery] = useState("")
+export default function Searchbar({ searchQuery, setSearchQuery }){
     const [showFilters, setShowFilters] = useState(false)
     const [showSorts, setSShowSorts] = useState(false)
 
@@ -26,26 +25,35 @@ export default function Searchbar(){
 
             
         </div>
-        <div className="p-4 border-b border-gray-200">
-                <div className="flex space-x-2">
+        <div className="p-3 border-b border-gray-200">
+                <div className="flex justify-between items-center">
                 <Button 
                     variant="secondary" 
                     size="sm" 
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-1 px-2"
                     onClick={()=>setShowSorts(!showSorts)}
                 >
-                    <ArrowUpDown className="h-4 w-4" />
-                    <span>Sort</span>
+                    <ArrowUpDown className="h-3 w-3" />
+                    <span className="text-xs">Sort</span>
                 </Button>
                 <Button
                     variant="secondary"
                     size="sm"
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-1 px-2"
                     onClick={() => setShowFilters(!showFilters)}
                 >
-                    <SlidersHorizontal className="h-4 w-4" />
-                    <span>Filters</span>
+                    <SlidersHorizontal className="h-3 w-3" />
+                    <span className="text-xs">Filters</span>
                 </Button>
+                <Button 
+                    variant="secondary" 
+                    size="sm" 
+                    className="flex items-center space-x-1 px-2"
+                >
+                    <Bookmark className="h-3 w-3" />
+                    <span className="text-xs">Saved</span>
+                </Button>
+               
             </div>
 
         </div>

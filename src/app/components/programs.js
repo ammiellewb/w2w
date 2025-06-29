@@ -31,6 +31,15 @@ const exchangePrograms = [
       spotsAvailable: "2",
       isNew: false,
     },
+    {
+      id: 4,
+      name: "Akita International University Exchange Program",
+      university: "Akita International University",
+      location: "Akita, Japan",
+      likeliness: "Lowest",
+      spotsAvailable: "2",
+      isNew: false,
+    },
   ]
 
 function getColor(likeliness) {
@@ -46,18 +55,30 @@ function getColor(likeliness) {
   }
 }
 
-export default function Programs(){
-    const [selectedProgram, setSelectedProgram] = useState(null)
+export default function Programs({ selectedProgram, setSelectedProgram, searchQuery = "" }){
+
+    // Filter programs based on search query
+    const searchedPrograms = exchangePrograms.filter(program => {
+        if (!searchQuery) return true;
+        
+        const query = searchQuery.toLowerCase();
+        return (
+            program.name.toLowerCase().includes(query) ||
+            program.university.toLowerCase().includes(query) ||
+            program.location.toLowerCase().includes(query) ||
+            program.likeliness.toLowerCase().includes(query)
+        );
+    });
 
     return (
         <div className="flex-1 overflow-y-auto">
-            {exchangePrograms.map((program) => (
+            {searchedPrograms.map((program) => (
                 <Card
                     key={program.id}
                     className={`p-0 m-3 cursor-pointer transition-all hover:shadow-md ${getColor(program.likeliness)} ${
                   selectedProgram === program.id ? "ring-2 ring-blue-500" : ""
                 }`}
-                onClick={()=>setSelectedProgram(program.id)}
+                onClick={() => setSelectedProgram(selectedProgram === program.id ? null : program.id)}
                 >
                     <CardContent className="p-4">
                         <div className="flex items-center mb-1">

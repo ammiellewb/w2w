@@ -3,11 +3,11 @@ import path from 'path'
 import { parseProgramPage } from './parseProgramPage'
 
 async function testFirstLink() {
-  const all = fs.readFileSync('./s25-program-links.txt', 'utf-8')
-  const links = all.split('\n').map(l => l.trim()).filter(Boolean)
+  // const all = fs.readFileSync('./s25-program-links.txt', 'utf-8')
+  // const links = all.split('\n').map(l => l.trim()).filter(Boolean)
   
   // 2. Grab the first URL
-  const url = links[0]
+  const url = "https://uwaterloo-horizons.symplicity.com/index.php?s=programs&mode=form&id=6f6a9a6d7b9c7751ccf9ce7374ff6026"
   console.log('⏳ Fetching and parsing:', url)
 
   // 3. Parse and print
