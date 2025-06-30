@@ -1,46 +1,13 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-const exchangePrograms = [
-    {
-      id: 1,
-      name: "Chung-Ang University Exchange Program",
-      university: "Chung-Ang University (CAU)",
-      location: "Seoul, South Korea",
-      likeliness: "Moderate",
-      spotsAvailable: "2",
-      isNew: true,
-    },
-    {
-      id: 2,
-      name: "Indian Institute of Technology, Delhi Exchange Program",
-      university: "IIT Delhi",
-      location: "Delhi, India",
-      likeliness: "Low",
-      spotsAvailable: "2",
-      isNew: false,
-    },
-    {
-      id: 3,
-      name: "Akita International University Exchange Program",
-      university: "Akita International University",
-      location: "Akita, Japan",
-      likeliness: "Lowest",
-      spotsAvailable: "2",
-      isNew: false,
-    },
-    {
-      id: 4,
-      name: "Akita International University Exchange Program",
-      university: "Akita International University",
-      location: "Akita, Japan",
-      likeliness: "Lowest",
-      spotsAvailable: "2",
-      isNew: false,
-    },
-  ]
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
 
 function getColor(likeliness) {
   switch (likeliness) {
@@ -56,47 +23,92 @@ function getColor(likeliness) {
 }
 
 export default function Programs({ selectedProgram, setSelectedProgram, searchQuery = "" }){
+    const [programs, setPrograms] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        async function fetchPrograms() {
+            try {
+                setLoading(true);
+                const { data, error } = await supabase
+                    .from('exchangeprograms')
+                    .select('*')
+                    .order('name');
+
+                if (error) {
+                    throw error;
+                }
+
+                setPrograms(data || []);
+            } catch (err) {
+                console.error('Error fetching programs:', err);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchPrograms();
+    }, []);
 
     // Filter programs based on search query
-    const searchedPrograms = exchangePrograms.filter(program => {
+    const searchedPrograms = programs.filter(program => {
         if (!searchQuery) return true;
         
         const query = searchQuery.toLowerCase();
         return (
-            program.name.toLowerCase().includes(query) ||
-            program.university.toLowerCase().includes(query) ||
-            program.location.toLowerCase().includes(query) ||
-            program.likeliness.toLowerCase().includes(query)
+            program.name?.toLowerCase().includes(query) ||
+            program.university?.toLowerCase().includes(query) ||
+            program.location?.toLowerCase().includes(query) ||
+            program.likeliness?.toLowerCase().includes(query)
         );
     });
 
+    if (loading) {
+        return (
+            <div className="flex-1 overflow-y-auto flex items-center justify-center">
+                <div className="text-gray-500">Loading programs...</div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex-1 overflow-y-auto flex items-center justify-center">
+                <div className="text-red-500">Error loading programs: {error}</div>
+            </div>
+        );
+    }
+
     return (
         <div className="flex-1 overflow-y-auto">
-            {searchedPrograms.map((program) => (
-                <Card
-                    key={program.id}
-                    className={`p-0 m-3 cursor-pointer transition-all hover:shadow-md ${getColor(program.likeliness)} ${
-                  selectedProgram === program.id ? "ring-2 ring-blue-500" : ""
-                }`}
-                onClick={() => setSelectedProgram(selectedProgram === program.id ? null : program.id)}
-                >
-                    <CardContent className="p-4">
-                        <div className="flex items-center mb-1">
-                            <h3 className="font-medium text-sm underline mr-2">{program.name}</h3>
-                            {program.isNew && <Badge className="mb-2 bg-green-600 text-white align-left">*NEW*</Badge>}
-                        </div>
-                        <div className="flex justify-between items-start mb-2">
-                            <div className="text-sm font-medium">{program.university}</div>
-                            <div className="text-sm font-medium text-right">{program.location}</div>
-                        </div>
-                        <div className="text-sm text-gray-600">
-                            <span className="font-medium">Likeliness - {program.likeliness}</span>
-                            <br />
-                            <span>Approx {program.spotsAvailable} spots available</span>
-                        </div>
-                    </CardContent>
-                </Card>
-            ))}
+            {searchedPrograms.length === 0 ? (
+                <div className="flex items-center justify-center p-8">
+                    <div className="text-gray-500">No programs found</div>
+                </div>
+            ) : (
+                searchedPrograms.map((program) => (
+                    <Card
+                        key={program.program_id}
+                        className={`p-0 m-3 cursor-pointer transition-all hover:shadow-md ${getColor(program.likeliness)} ${
+                      selectedProgram?.program_id === program.program_id ? "ring-2 ring-blue-500" : ""
+                    }`}
+                        onClick={() => setSelectedProgram(selectedProgram?.program_id === program.program_id ? null : program)}
+                    >
+                        <CardContent className="p-4">
+                            <div className="flex items-center mb-1">
+                                <h3 className="font-medium text-sm underline mr-2">{program.name}</h3>
+                                {program.is_new && <Badge className="mb-2 bg-green-600 text-white align-left">*NEW*</Badge>}
+                            </div>
+                            <div className="flex justify-between items-start mb-1">
+                                <div className="text-xs font-medium">{program.university}</div>
+                                <div className="text-sm font-medium text-right">{program.location}</div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                ))
+            )}
         </div>
-    )
+    );
 }

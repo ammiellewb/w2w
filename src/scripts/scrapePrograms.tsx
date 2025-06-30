@@ -10,7 +10,7 @@ const supabase = createClient(
 
 async function scrapePrograms() {
     
-    const content = fs.readFileSync('src/scripts/s25-program-links.txt', 'utf-8')
+    const content = fs.readFileSync('./s25-program-links.txt', 'utf-8')
     const links = content.split('\n').map(l => l.trim()).filter(Boolean)
 
     for (const url of links) {

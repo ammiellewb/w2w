@@ -31,13 +31,13 @@ function App() {
         </div>
         {/* Details Pane */}
         {selectedProgram && (
-          <div>
+          <div className="w-96 bg-white border-r border-gray-200">
             <ProgramDetails program={selectedProgram} />
           </div>
         )}
           
         <div className="flex-1 relative bg-blue-200">
-          <Map />
+          <Map selectedProgram={selectedProgram} onProgramSelect={setSelectedProgram} />
         </div>
       </div>
     </div>
