@@ -17,27 +17,37 @@ import './globals.css';
 function App() {
   const [searchQuery, setSearchQuery] = useState("")
   const [showFilters, setShowFilters] = useState(false)
-  const [showSorts, setSShowSorts] = useState(false)
   const [selectedProgram, setSelectedProgram] = useState(null)
+  const [filters, setFilters] = useState({
+    likeliness: [],
+    languages: [],
+    faculties: [],
+    type: [],
+    academic_level: [],
+  });
+  const [displayedCount, setDisplayedCount] = useState(0);
+  const [sortOption, setSortOption] = useState(null);
 
   return (
     <div className="h-screen flex flex-col bg-gray-50">
      { /* <Navbar /> */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar */} 
-        <div className="w-96 bg-white border-r border-gray-200 flex flex-col">
-        <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        <Programs selectedProgram={selectedProgram} setSelectedProgram={setSelectedProgram} searchQuery={searchQuery} />
+        <div className="w-96 bg-white border-r border-gray-200 flex flex-col relative">
+        <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} filters={filters} setFilters={setFilters} sortOption={sortOption} setSortOption={setSortOption} />
+        <Programs selectedProgram={selectedProgram} setSelectedProgram={setSelectedProgram} searchQuery={searchQuery} filters={filters} setDisplayedCount={setDisplayedCount} sortOption={sortOption} />
+        <div className="absolute bottom-0 left-0 w-full bg-white border-t border-gray-200 py-2 px-4 text-center shadow-md z-10">
+          <span className="font-medium text-sm text-gray-700">{displayedCount} program{displayedCount === 1 ? '' : 's'} displayed</span>
         </div>
-        {/* Details Pane */}
-        {selectedProgram && (
-          <div className="w-96 bg-white border-r border-gray-200">
-            <ProgramDetails program={selectedProgram} />
-          </div>
-        )}
-          
+        </div>
+        {/* Map Area */}
         <div className="flex-1 relative bg-blue-200">
           <Map selectedProgram={selectedProgram} onProgramSelect={setSelectedProgram} />
+          {selectedProgram && (
+            <div className="fixed top-4 bottom-4 left-95 z-30 w-90 max-w-full">
+              <ProgramDetails program={selectedProgram} onClose={() => setSelectedProgram(null)} />
+            </div>
+          )}
         </div>
       </div>
     </div>

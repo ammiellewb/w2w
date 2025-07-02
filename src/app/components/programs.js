@@ -22,7 +22,7 @@ function getColor(likeliness) {
   }
 }
 
-export default function Programs({ selectedProgram, setSelectedProgram, searchQuery = "" }){
+export default function Programs({ selectedProgram, setSelectedProgram, searchQuery = "", filters, setDisplayedCount, sortOption }){
     const [programs, setPrograms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -65,6 +65,34 @@ export default function Programs({ selectedProgram, setSelectedProgram, searchQu
         );
     });
 
+    const filteredPrograms = searchedPrograms.filter(program => {
+        return Object.entries(filters).every(([category, values]) => {
+            if (!values || values.length === 0) {
+                return true;
+            }
+
+            const programValue = program[category];
+            
+            if (category === 'academic_level') {
+                if (!programValue) return false;
+                return values.some(filterValue => programValue.includes(filterValue));
+            }
+            
+            if (Array.isArray(programValue)) {
+                // Handle cases where the program property is an array (e.g., languages)
+                return values.some(filterValue => programValue.includes(filterValue));
+            }
+            
+            return values.includes(program[category]);
+        });
+    });
+
+    useEffect(() => {
+        if (setDisplayedCount) {
+            setDisplayedCount(filteredPrograms.length);
+        }
+    }, [filteredPrograms.length, setDisplayedCount]);
+
     if (loading) {
         return (
             <div className="flex-1 overflow-y-auto flex items-center justify-center">
@@ -82,13 +110,13 @@ export default function Programs({ selectedProgram, setSelectedProgram, searchQu
     }
 
     return (
-        <div className="flex-1 overflow-y-auto">
-            {searchedPrograms.length === 0 ? (
+        <div className="flex-1 overflow-y-auto pb-10">
+            {filteredPrograms.length === 0 ? (
                 <div className="flex items-center justify-center p-8">
                     <div className="text-gray-500">No programs found</div>
                 </div>
             ) : (
-                searchedPrograms.map((program) => (
+                filteredPrograms.map((program) => (
                     <Card
                         key={program.program_id}
                         className={`p-0 m-3 cursor-pointer transition-all hover:shadow-md ${getColor(program.likeliness)} ${

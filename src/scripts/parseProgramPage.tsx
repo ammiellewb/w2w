@@ -12,7 +12,7 @@ export interface Program {
   duration: string
   location: string
   likeliness: string
-  spots_available: string
+  spots_available: number
   is_new: boolean
   languages: string[]
   term: string[]
@@ -142,7 +142,7 @@ function getSidebarField($: CheerioAPI, labelText: string): string {
       duration,
       location,
       likeliness,
-      spots_available: spotsAvailable,
+      spots_available: parseInt(spotsAvailable, 10),
       is_new: isNew,
       languages,
       term,

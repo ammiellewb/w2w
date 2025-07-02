@@ -35,7 +35,7 @@ export default function Map({ selectedProgram, onProgramSelect }) {
         setLoading(true);
         const { data, error } = await supabase
           .from('exchangeprograms')
-          .select('name, university, lat, lng')
+          .select('program_id, name, university, lat, lng')
           .not('lat', 'is', null)
           .not('lng', 'is', null);
 
@@ -64,7 +64,7 @@ export default function Map({ selectedProgram, onProgramSelect }) {
     if (selectedProgramData && selectedProgramData.lat && selectedProgramData.lng) {
       map.current.flyTo({
         center: [selectedProgramData.lng, selectedProgramData.lat],
-        zoom: 8,
+        zoom: 6,
         duration: 1000
       });
     }
@@ -98,7 +98,7 @@ export default function Map({ selectedProgram, onProgramSelect }) {
 
     // Waterloo popup content
     ReactDOM.createRoot(popupContent).render(
-      <Card className="p-0 m-0 shadow-lg rounded-lg" style={{ minWidth: 220 }}>
+      <Card className="p-0 m-0 shadow-lg rounded-lg border-none" style={{ minWidth: 220 }}>
 
         <CardContent className="p-4">
           <div className="flex items-center mb-1">
@@ -107,8 +107,11 @@ export default function Map({ selectedProgram, onProgramSelect }) {
           <div className="flex justify-between items-center mb-2">
             <div className="text-xs font-medium">Main Campus</div>
             <CircleArrowRight
-              size={28}
+              className="text-blue-600 hover:text-blue-800"
+              size={22}
               style={{ cursor: "pointer", marginLeft: 12 }}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => {window.location.href='https://uwaterloo.ca/future-students/programs/exchange-programs'}}
             />
           
@@ -145,14 +148,20 @@ export default function Map({ selectedProgram, onProgramSelect }) {
         const popupContent = document.createElement('div');
 
         ReactDOM.createRoot(popupContent).render(
-          <Card className="p-0 m-0 shadow-lg rounded-lg" style={{ minWidth: 220 }}>
+          <Card
+            className="p-0 m-0 shadow-lg rounded-lg border-none"
+            style={{ minWidth: 220 }}
+          >
             <CardContent className="p-4">
               <div className="flex items-center mb-1">
-                <h3 className="font-medium text-sm underline mr-2">{program.name}</h3>
+                <h3 className="font-medium text-sm underline mr-2">
+                  {program.name}
+                </h3>
               </div>
               <div className="flex items-center justify-between mb-2">
                 <div className="text-xs font-medium">{program.university}</div>
                 <CircleArrowRight
+                  className="text-blue-600 hover:text-blue-800"
                   size={22}
                   style={{ cursor: "pointer", marginLeft: 8 }}
                   onClick={() => {
@@ -163,7 +172,8 @@ export default function Map({ selectedProgram, onProgramSelect }) {
                 />
               </div>
             </CardContent>
-          </Card>);
+          </Card>
+        );
 
         new maplibregl.Marker({ element: el, anchor: 'bottom' })
           .setLngLat([program.lng, program.lat])
