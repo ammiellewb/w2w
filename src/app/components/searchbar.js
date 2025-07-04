@@ -15,18 +15,18 @@ const supabase = createClient(
 
 const filterCategoryNames = {
     likeliness: 'Competitiveness',
-    languages: 'Languages',
-    faculties: 'Faculties',
     type: 'Type',
+    faculties: 'Faculties',
+    languages: 'Languages',
     academic_level: 'Academic Level'
 };
 
-export default function Searchbar({ searchQuery, setSearchQuery, filters, setFilters, sortOption, setSortOption }){
+export default function Searchbar({ searchQuery, setSearchQuery, filters, setFilters }){
     const [filterOptions, setFilterOptions] = useState({
         likeliness: [],
-        languages: [],
-        faculties: [],
         type: [],
+        faculties: [],
+        languages: [],
         academic_level: [],
     });
 
@@ -43,9 +43,9 @@ export default function Searchbar({ searchQuery, setSearchQuery, filters, setFil
 
             const options = {
                 likeliness: [...new Set(data.map(p => p.likeliness).filter(Boolean))],
-                languages: [...new Set(data.flatMap(p => p.languages || []).filter(Boolean))],
-                faculties: [...new Set(data.flatMap(p => p.faculties || []).filter(Boolean))],
                 type: [...new Set(data.map(p => p.type).filter(Boolean))],
+                faculties: [...new Set(data.flatMap(p => p.faculties || []).filter(Boolean))],
+                languages: [...new Set(data.flatMap(p => p.languages || []).filter(Boolean))],
                 academic_level: ['Graduate', 'Undergraduate'],
             };
             setFilterOptions(options);
@@ -79,6 +79,8 @@ export default function Searchbar({ searchQuery, setSearchQuery, filters, setFil
         });
     };
 
+    const isFilterActive = Object.values(filters).some(arr => Array.isArray(arr) && arr.length > 0);
+
     return (
         <div className="">
             <div className="p-4 border-b border-gray-200">
@@ -98,7 +100,7 @@ export default function Searchbar({ searchQuery, setSearchQuery, filters, setFil
         </div>
         <div className="p-3 border-b border-gray-200">
                 <div className="flex justify-between items-center">
-                <Button 
+                {/* <Button 
                     variant="secondary" 
                     size="sm" 
                     className="flex items-center space-x-1 px-2"
@@ -106,13 +108,13 @@ export default function Searchbar({ searchQuery, setSearchQuery, filters, setFil
                 >
                     <ArrowUpDown className="h-3 w-3" />
                     <span className="text-sm">Sort</span>
-                </Button>
+                </Button> */}
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button
                             variant="secondary"
                             size="sm"
-                            className="flex items-center space-x-1 px-2"
+                            className={`flex items-center space-x-1 px-2  ${isFilterActive ? 'bg-gray-300 hover:bg-gray-300' : ''}`}
                         >
                             <SlidersHorizontal className="h-3 w-3" />
                             <span className="text-sm">Filters</span>

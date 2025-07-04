@@ -135,3 +135,12 @@ code {
     @apply bg-background text-foreground;
   }
 }
+
+.markdown-content ul {
+  list-style-type: disc;
+  margin-left: 1.5em;
+}
+.markdown-content a {
+  color: #2563eb; /* blue-600 */
+  text-decoration: underline;
+}

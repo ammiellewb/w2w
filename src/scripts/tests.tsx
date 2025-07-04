@@ -1,23 +1,94 @@
+import axios from 'axios'
 import fs from 'fs'
-import path from 'path'
-import { parseProgramPage } from './parseProgramPage'
+import { CheerioAPI, load } from 'cheerio'
+import { config } from 'dotenv'
+import { createClient } from '@supabase/supabase-js'
+config()
 
-async function testFirstLink() {
-  // const all = fs.readFileSync('./s25-program-links.txt', 'utf-8')
-  // const links = all.split('\n').map(l => l.trim()).filter(Boolean)
+export interface ProgramPatch {
+  program_id: string
+  programs_available: string[]
+  requirements: string
+}
+
+function getTableField($: CheerioAPI, labelText: string): string {
+  const labelEl = $('label').filter((_: number, el: any) => $(el).text().trim() === labelText)
+  const row = labelEl.parents('tr').first()
+  const widget = row.find('.widget.inline').first()
+  return widget.text().trim()
+}
+
+export async function parseProgramPage(url: string): Promise<ProgramPatch> {
+  const { data: html } = await axios.get(url, {
+    headers: {
+      // send the exact same cookie string your browser had
+      Cookie: process.env.SYMP_COOKIE || ''
+    }
+  })
+  const $ = load(html)
+
+  const programId = new URL(url).searchParams.get('id')!
+
+  const progText = $('.program_info .p_left .pfield.summary > p')
+  .filter((_, el) => $(el).text().trim().startsWith('Programs available:'))
+  .text()
+  .replace(/Programs available:/i, '')
+  .trim()
+
+  const programsAvailable = progText
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
   
-  // 2. Grab the first URL
-  const url = "https://uwaterloo-horizons.symplicity.com/index.php?s=programs&mode=form&id=6f6a9a6d7b9c7751ccf9ce7374ff6026"
-  console.log('⏳ Fetching and parsing:', url)
+  const requirements = getTableField($, 'What are the requirements?')
 
-  // 3. Parse and print
-  try {
-    const program = await parseProgramPage(url)
-    console.log('✅ Parsed program object:')
-    console.dir(program, { depth: null, colors: true })
-  } catch (err) {
-    console.error('❌ Error parsing page:', err)
+  return {
+    program_id: programId,
+    programs_available: programsAvailable,
+    requirements,
   }
 }
 
-testFirstLink()
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+async function main() {
+  console.log('🔄 Fetching all exchangeprograms rows…')
+  const { data: rows, error: fetchErr } = await supabase
+    .from('exchangeprograms')
+    .select('program_id, url')
+  if (fetchErr) throw fetchErr
+  if (!rows || rows.length === 0) {
+    console.log('⚠️ No rows found in exchangeprograms.')
+    return
+  }
+
+  for (const row of rows) {
+    try {
+      console.log(`\n✨ Processing ${row.program_id}`)
+      const patch = await parseProgramPage(row.url)
+      console.log('  › parsed:', patch)
+
+      const { error: upsertErr } = await supabase
+        .from('exchangeprograms')
+        .upsert(patch, { onConflict: 'program_id' })
+
+      if (upsertErr) {
+        console.error(`  ❌ Failed to upsert ${row.program_id}:`, upsertErr)
+      } else {
+        console.log(`  ✔️ Updated ${row.program_id}`)
+      }
+    } catch (err) {
+      console.error(`  ❌ Error on ${row.program_id}:`, err)
+    }
+  }
+
+  console.log('\n✅ All done!')
+  }
+
+  main().catch(err => {
+  console.error('Fatal error:', err)
+  process.exit(1)
+  })

@@ -26,47 +26,46 @@ export interface Program {
 
 // extract text from a label-driven field
 function getTableField($: CheerioAPI, labelText: string): string {
-    const labelEl = $('label').filter((_: number, el: any) => $(el).text().trim() === labelText)
-    const row = labelEl.parents('tr').first()
-    const widget = row.find('.widget.inline').first()
-    return widget.text().trim()
+  const labelEl = $('label').filter((_: number, el: any) => $(el).text().trim() === labelText)
+  const row = labelEl.parents('tr').first()
+  const widget = row.find('.widget.inline').first()
+  return widget.text().trim()
 }
 
 function getSidebarField($: CheerioAPI, labelText: string): string {
-    // find .p_right .pfield whose span.label text matches
-    const field = $('.p_right .pfield').filter((_, el) => {
-      const lbl = $(el).find('span.label').first().text().trim()
-      return lbl === labelText
-    }).first()
-    // the rest of the text after <br>
-    const html = field.html() || ''
-    const parts = html.split(/<br\s*\/?/i)
-    return parts[1]?.replace(/<[^>]+>/g, '').trim() || ''
-  }
+  // find .p_right .pfield whose span.label text matches
+  const field = $('.p_right .pfield').filter((_, el) => {
+    const lbl = $(el).find('span.label').first().text().trim()
+    return lbl === labelText
+  }).first()
+  // the rest of the text after <br>
+  const html = field.html() || ''
+  const parts = html.split(/<br\s*\/?/i)
+  return parts[1]?.replace(/<[^>]+>/g, '').trim() || ''
+}
   
-  export async function parseProgramPage(url: string): Promise<Program> {
-    const { data: html } = await axios.get(url, {
-        headers: {
-          // send the exact same cookie string your browser had
-          Cookie: process.env.SYMP_COOKIE || ''
-        }
-      })
-    const $ = load(html)
+export async function parseProgramPage(url: string): Promise<Program> {
+  const { data: html } = await axios.get(url, {
+    headers: {
+      // send the exact same cookie string your browser had
+      Cookie: process.env.SYMP_COOKIE || ''
+    }
+  })
+  const $ = load(html)
 
-    const { data: listHtml } = await axios.get(HOME_URL, 
-        { headers: { 
-            Cookie: process.env.SYMP_COOKIE || ''
-        } 
+  const { data: listHtml } = await axios.get(HOME_URL, 
+    { headers: { 
+      Cookie: process.env.SYMP_COOKIE || ''
+      } 
     })
-    const $$ = load(listHtml)
+  const $$ = load(listHtml)
   
-  
-    const rawTitle = $('h1.titlebar').text().trim()
-    const isNew = rawTitle.startsWith('*NEW*')
-    const name = rawTitle.replace('*NEW*', '').trim()
-    const university = $('#dnf_class_values_institution__name__widget').text().trim()
-    const type = getSidebarField($, 'Type:').replace(/^>/, '').trim()
-    const duration = getSidebarField($, 'Duration:').replace(/^>/, '').trim()
+  const rawTitle = $('h1.titlebar').text().trim()
+  const isNew = rawTitle.startsWith('*NEW*')
+  const name = rawTitle.replace('*NEW*', '').trim()
+  const university = $('#dnf_class_values_institution__name__widget').text().trim()
+  const type = getSidebarField($, 'Type:').replace(/^>/, '').trim()
+  const duration = getSidebarField($, 'Duration:').replace(/^>/, '').trim()
   
   // top detail summaries
   const summary = $('.program__top_detail .pfield.summary')

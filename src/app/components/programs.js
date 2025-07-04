@@ -22,7 +22,7 @@ function getColor(likeliness) {
   }
 }
 
-export default function Programs({ selectedProgram, setSelectedProgram, searchQuery = "", filters, setDisplayedCount, sortOption }){
+export default function Programs({ selectedProgram, setSelectedProgram, searchQuery = "", filters, setDisplayedCount }){
     const [programs, setPrograms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

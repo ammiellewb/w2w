@@ -110,9 +110,9 @@ export default function Map({ selectedProgram, onProgramSelect }) {
               className="text-blue-600 hover:text-blue-800"
               size={22}
               style={{ cursor: "pointer", marginLeft: 12 }}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {window.location.href='https://uwaterloo.ca/future-students/programs/exchange-programs'}}
+              // target="_blank"
+              // rel="noopener noreferrer"
+              onClick={() => {window.open('https://uwaterloo.ca/future-students/programs/exchange-programs', '_blank')}}
             />
           
           </div>
