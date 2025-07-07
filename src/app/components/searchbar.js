@@ -138,8 +138,9 @@ export default function Searchbar({
           >
             <HelpCircle className="h-3 w-3" />
             <span className="text-sm">About</span>
-            <AboutModal open={aboutOpen} onClose={() => setAboutOpen(null)} />
+            
           </Button>
+          {aboutOpen && <AboutModal open={aboutOpen} onClose={() => setAboutOpen(null)} />}
           {/* <Button 
                     variant="secondary" 
                     size="sm" 

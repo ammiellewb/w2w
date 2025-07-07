@@ -13,7 +13,7 @@ import './map.css';
 const API_KEY = process.env.NEXT_PUBLIC_MAPTILER_API_KEY;
 maptilersdk.config.apiKey = process.env.NEXT_PUBLIC_MAPTILER_API_KEY;
 
-export default function Map({ selectedProgram, onProgramSelect }) {
+export default function Map({ selectedProgram, onProgramSelect, detailsOpen }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [programs, setPrograms] = useState([]);
@@ -57,23 +57,44 @@ export default function Map({ selectedProgram, onProgramSelect }) {
     const selectedProgramData = programs.find(p => p.name === selectedProgram.name);
     
     if (selectedProgramData && selectedProgramData.lat && selectedProgramData.lng) {
-      map.current.flyTo({
+      // project the target lat/lng to screen coordinates
+      const mapInstance = map.current;
+      const target = mapInstance.project([selectedProgramData.lng, selectedProgramData.lat]);
+      // offset right by sidebar width (360px) and bottom if detailsOpen
+      let offsetX = -360; // px
+      let offsetY = 0;
+      if (detailsOpen) {
+        // on mobile, center the popup above the bottom margin (e.g., 20vh)
+        offsetX = 0;
+        offsetY = -window.innerHeight * 0.60; // move up by 20% of viewport height
+      }
+      const mapContainer = mapInstance.getContainer();
+      const width = mapContainer.offsetWidth;
+      const height = mapContainer.offsetHeight;
+      const newScreenPoint = {
+        x: width / 2 + offsetX / 2,
+        y: height / 2 + offsetY / 2
+      };
+      const newCenter = mapInstance.unproject([newScreenPoint.x, newScreenPoint.y]);
+      mapInstance.flyTo({
         center: [selectedProgramData.lng, selectedProgramData.lat],
         zoom: 6,
         duration: 1000
       });
-      // Close all popups first
+      setTimeout(() => {
+        mapInstance.panBy([offsetX / 2, offsetY / 2], { duration: 500 });
+      }, 1000);
+      // close all popups first
       Object.values(markerRefs.current).forEach(marker => {
         if (marker.getPopup()) marker.getPopup().remove();
       });
-      // Open the popup for the selected program's marker
+      // open the popup for the selected program's marker
       const marker = markerRefs.current[selectedProgramData.program_id];
-      console.log(marker);
       if (marker && !marker.getPopup().isOpen()) {
         marker.togglePopup();
       }
     }
-  }, [selectedProgram, programs]);
+  }, [selectedProgram, programs, detailsOpen]);
 
   // Store marker references for each program
   const markerRefs = useRef({});

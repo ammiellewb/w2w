@@ -36,7 +36,7 @@ export default function ProgramDetails({ program, onClose }) {
   const [showComments, setShowComments] = useState(false);
   const [averageRating, setAverageRating] = useState(null);
   const [ratingCount, setRatingCount] = useState(0);
-  console.log(averageRating);
+  //console.log(averageRating);
 
   useEffect(() => {
     if (program && program.program_id) {
@@ -76,7 +76,7 @@ export default function ProgramDetails({ program, onClose }) {
         .eq("program_id", program.program_id)
         .single();
 
-      console.log(data);
+      //console.log(data);
 
       if (error) {
         console.error("Error fetching ratings:", error);

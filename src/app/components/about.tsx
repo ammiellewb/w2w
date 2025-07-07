@@ -34,10 +34,10 @@ export default function AboutModal({ open, onClose }: AboutModalProps) {
         >
           <X size={22} />
         </Button>
-        <h2 className="text-xl font-bold text-gray-800 mb-2 break-words w-full whitespace-normal">
+        <h2 className="text-center text-xl font-bold text-gray-800 mb-2 break-words w-full whitespace-normal">
         🌎 What is Waterloo 2 World (W2W)? 
         </h2>
-        <p className="mb-4 text-gray-700 text-base break-words w-full whitespace-normal select-text">
+        <p className="text-center mb-4 text-gray-700 text-base break-words w-full whitespace-normal select-text">
           Waterloo 2 World helps UWaterloo students explore, compare, and share real
           experiences about international exchange programs — using live data pulled 
           directly from the official <a
@@ -79,10 +79,32 @@ export default function AboutModal({ open, onClose }: AboutModalProps) {
             links and guides for your journey.
           </li>
         </ul>
+        {/* competitiveness meaning table */}
+        <div className="mb-4 w-full select-text">
+          <h4 className="text-center font-semibold text-gray-700 mb-2 text-base break-words w-full whitespace-normal">
+            What do the program colours mean?
+          </h4>
+          <table className="text-left w-full text-sm border border-gray-200 rounded mb-4">
+            <tbody>
+              <tr className="border border-gray-200">
+                <td className="p-2 align-top w-8"><span className="inline-block w-4 h-4 rounded-full mr-2 bg-red-200"></span></td>
+                <td className="p-2 align-top w-full whitespace-normal"><b>Lowest</b> - These schools are very popular and are in very high demand. <b>Less than half</b> of the students who list this school as their first choice are likely to be matched. <b>Do not</b> list this school as your second, third, or fourth choice.</td>
+              </tr>
+              <tr className="border border-gray-200">
+                <td className="p-2 align-top w-8"><span className="inline-block w-4 h-4 rounded-full mr-2 bg-yellow-200"></span></td>
+                <td className="p-2 align-top w-full whitespace-normal"><b>Low</b> - These schools are popular and students who list these schools as their first choice have a chance of getting matched. <b>Do not</b> list this school as your second, third or fourth choice.</td>
+              </tr>
+              <tr className="border border-gray-200">
+                <td className="p-2 align-top w-8"><span className="inline-block w-4 h-4 rounded-full mr-2 bg-green-200"></span></td>
+                <td className="p-2 align-top w-full whitespace-normal"><b>Moderate</b> - Students who list this school as their first choice have the highest likelihood of getting matched. You may get matched if you list this as your second, third or fourth choice.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div className="mb-4 w-full">
-          <h3 className="font-semibold text-gray-700 mb-1 text-base break-words w-full whitespace-normal">
+          <h4 className="text-center font-semibold text-gray-700 mb-1 text-base break-words w-full whitespace-normal">
             How to get started:
-          </h3>
+          </h4>
           <ol className="list-decimal pl-5 text-gray-700 text-sm space-y-1 break-words w-full whitespace-normal text-left select-text">
             <li>Search or browse for a program using the map or search bar.</li>
             <li>Click a program to see details, reviews, and how to apply.</li>
@@ -91,7 +113,7 @@ export default function AboutModal({ open, onClose }: AboutModalProps) {
             <li>Check out comments, resources, and links to help you prepare.</li>
           </ol>
         </div>
-        <div className="mb-4 w-full select-text">
+        <div className="mb-4 w-full select-text text-center">
           <h4 className="font-semibold text-gray-700 mb-1 text-base break-words w-full whitespace-normal">
             For more information:
           </h4>
@@ -108,7 +130,7 @@ export default function AboutModal({ open, onClose }: AboutModalProps) {
             about your study plans.
           </span>
         </div>
-        <div className="mb-4 w-full select-text">
+        <div className="mb-4 w-full select-text text-center">
           <h4 className="font-semibold text-gray-700 mb-1 text-base break-words w-full whitespace-normal">
             Have a question?
           </h4>
@@ -126,7 +148,7 @@ export default function AboutModal({ open, onClose }: AboutModalProps) {
             </a>
           </span>
         </div>
-        <div className="mb-4 w-full select-text">
+        <div className="mb-4 w-full select-text text-center">
           <h4 className="font-semibold text-gray-700 mb-1 text-base break-words w-full whitespace-normal">
             Support Available:
           </h4>
@@ -141,6 +163,7 @@ export default function AboutModal({ open, onClose }: AboutModalProps) {
             </a>
           </span>
         </div>
+        
       </div>
     </div>
   );
