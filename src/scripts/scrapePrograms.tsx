@@ -1,12 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-import { createClient } from '@supabase/supabase-js'
+import supabase from '@/lib/supabaseClient';
 import { parseProgramPage, Program } from './parseProgramPage'
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
 
 async function scrapePrograms() {
     
@@ -20,7 +15,7 @@ async function scrapePrograms() {
 
             // upsert by id to update existing entries
             const { error } = await supabase
-            .from('exchangeprograms')
+            .from('exchange_programs')
             .upsert(program, { onConflict: 'program_id' })
 
             if (error) console.log(`Error upserting ${program.program_id}:`, error)

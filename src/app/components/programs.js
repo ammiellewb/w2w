@@ -1,13 +1,8 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import supabase from '@/lib/supabaseClient';
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-)
 
 function getColor(likeliness) {
   switch (likeliness) {
@@ -32,7 +27,7 @@ export default function Programs({ selectedProgram, setSelectedProgram, searchQu
             try {
                 setLoading(true);
                 const { data, error } = await supabase
-                    .from('exchangeprograms')
+                    .from('exchange_programs')
                     .select('*')
                     .order('name');
 

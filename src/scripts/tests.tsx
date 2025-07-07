@@ -68,7 +68,9 @@ async function main() {
   for (const row of rows) {
     try {
       console.log(`\n✨ Processing ${row.program_id}`)
+      console.log(row.url)
       const patch = await parseProgramPage(row.url)
+
       console.log('  › parsed:', patch)
 
       const { error: upsertErr } = await supabase

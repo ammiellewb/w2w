@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CircleArrowRight, X } from 'lucide-react';
 import maplibregl from 'maplibre-gl';
 import * as maptilersdk from '@maptiler/sdk';
-import { createClient } from '@supabase/supabase-js';
+import supabase from '@/lib/supabaseClient';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import "@maptiler/sdk/dist/maptiler-sdk.css";
 import './map.css';
@@ -13,19 +13,14 @@ import './map.css';
 const API_KEY = process.env.NEXT_PUBLIC_MAPTILER_API_KEY;
 maptilersdk.config.apiKey = process.env.NEXT_PUBLIC_MAPTILER_API_KEY;
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-)
-
 export default function Map({ selectedProgram, onProgramSelect }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [programs, setPrograms] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const lng = -80.516670;
-  const lat = 43.466667;
+  const lng = -80.5474379;
+  const lat = 43.4722854;
   const zoom = 3;
 
   // fetch programs from Supabase
@@ -34,7 +29,7 @@ export default function Map({ selectedProgram, onProgramSelect }) {
       try {
         setLoading(true);
         const { data, error } = await supabase
-          .from('exchangeprograms')
+          .from('exchange_programs')
           .select('program_id, name, university, lat, lng')
           .not('lat', 'is', null)
           .not('lng', 'is', null);
@@ -67,8 +62,21 @@ export default function Map({ selectedProgram, onProgramSelect }) {
         zoom: 6,
         duration: 1000
       });
+      // Close all popups first
+      Object.values(markerRefs.current).forEach(marker => {
+        if (marker.getPopup()) marker.getPopup().remove();
+      });
+      // Open the popup for the selected program's marker
+      const marker = markerRefs.current[selectedProgramData.program_id];
+      console.log(marker);
+      if (marker && !marker.getPopup().isOpen()) {
+        marker.togglePopup();
+      }
     }
   }, [selectedProgram, programs]);
+
+  // Store marker references for each program
+  const markerRefs = useRef({});
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -175,10 +183,11 @@ export default function Map({ selectedProgram, onProgramSelect }) {
           </Card>
         );
 
-        new maplibregl.Marker({ element: el, anchor: 'bottom' })
+        const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
           .setLngLat([program.lng, program.lat])
           .setPopup(new maplibregl.Popup().setDOMContent(popupContent))
           .addTo(map.current);
+        markerRefs.current[program.program_id] = marker;
       }
     });
   }, [programs, loading]);

@@ -42,4 +42,6 @@ next-env.d.ts
 
 # static uploads
 S25_Waterloo_Passport_Search_Programs.html
-s25-program-links.txt
+
+# scripts
+src/scripts/*
