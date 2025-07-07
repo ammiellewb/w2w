@@ -44,6 +44,5 @@ next-env.d.ts
 S25_Waterloo_Passport_Search_Programs.html
 
 # scripts
-/src/scripts/*.tsx
-/src/scripts/*.ts
-/src/scripts/*.js
+src/scripts/*
+!src/scripts/parseProgramPage.tsx
