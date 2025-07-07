@@ -35,7 +35,7 @@ export default function AboutModal({ open, onClose }: AboutModalProps) {
           <X size={22} />
         </Button>
         <h2 className="text-xl font-bold text-gray-800 mb-2 break-words w-full whitespace-normal">
-          What is Waterloo 2 World (W2W)? 🌎
+        🌎 What is Waterloo 2 World (W2W)? 
         </h2>
         <p className="mb-4 text-gray-700 text-base break-words w-full whitespace-normal select-text">
           Waterloo 2 World helps UWaterloo students explore, compare, and share real
