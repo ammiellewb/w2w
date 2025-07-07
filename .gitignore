@@ -45,6 +45,6 @@ S25_Waterloo_Passport_Search_Programs.html
 
 # scripts
 src/scripts/*.tsx
-src/scripts/*.txt
+src/scripts/s25-program-links.txt
 src/scripts/*
 !src/scripts/parseProgramPage.tsx
