@@ -126,8 +126,8 @@ export const Rating = ({
   const [focusedStar, setFocusedStar] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [value, onValueChange] = useControllableState({
-    defaultProp: defaultValue,
-    prop: controlledValue,
+    defaultProp: defaultValue ?? 0,
+    prop: controlledValue ?? 0,
     onChange: controlledOnValueChange,
   });
 
