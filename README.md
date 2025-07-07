@@ -18,6 +18,16 @@ resources for your journey.
 
 ---
 
+## 📝 Usage Guide
+
+- **Search or browse** for a program using the map or search bar.
+- **Click a program** to see details, reviews, and how to apply.
+- **Read what other students have shared.**
+- **Leave your own review and rating** after your exchange.
+- **Check out comments, resources, and links** to help you prepare.
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -50,28 +60,10 @@ resources for your journey.
 
 ---
 
-## 📝 Usage Guide
-
-- **Search or browse** for a program using the map or search bar.
-- **Click a program** to see details, reviews, and how to apply.
-- **Read what other students have shared.**
-- **Leave your own review and rating** after your exchange.
-- **Check out comments, resources, and links** to help you prepare.
-
-For more information, speak with your [Faculty Exchange Representative](https://uwaterloo.ca/student-success/students/study-abroad-and-exchanges/go-abroad/application-steps#reps) or email the Global Learning Coordinators at [studyabroad@uwaterloo.ca](mailto:studyabroad@uwaterloo.ca).
-
-**Wellness Resources:** [Wellness Resources for Exchange Students (PDF)](https://uwaterloo-horizons.symplicity.com/outgoing/_dlcache_f59cc7302b4dbcbef1634e3d3eb0f29c_WellnessResourcesforExhcangeStudents.pdf?i=895fb6759e8f0b9a73cf6bb088b854de)
-
----
 
 ## 🤝 Contributing
 
-We welcome contributions from students and developers! To contribute:
-1. Fork this repo and create your feature branch (`git checkout -b feature/your-feature`)
-2. Commit your changes (`git commit -am 'Add new feature'`)
-3. Push to the branch (`git push origin feature/your-feature`)
-4. Open a Pull Request
-
+I welcome contributions from students (UW or other) and developers!
 For major changes, please open an issue first to discuss what you’d like to change.
 
 ---
