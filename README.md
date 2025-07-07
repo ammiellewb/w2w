@@ -1,6 +1,6 @@
 # Waterloo 2 World (W2W)
 
-Waterloo 2 World (W2W) is a modern web platform designed to help University of Waterloo students explore, compare, and share real experiences about international exchange programs. W2W brings together live program data, student reviews, and helpful resources to make your exchange journey easier and more informed.
+Waterloo 2 World (W2W) is an interactive platform that helps UWaterloo students explore exchange and co-op opportunities worldwide. It features a map-based interface, enriched filters, and student-driven insights to make finding global programs easier, more visual, and more personalized than the current Waterloo Passport site.
 
 ---
 
