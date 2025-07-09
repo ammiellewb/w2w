@@ -71,9 +71,3 @@ For major changes, please open an issue first to discuss what you’d like to ch
 ## 👉 [Feature Roadmap & Updates (Notion)](https://ammiellewb.notion.site/W2W-21eaa4f8c84480af91beeaa2fd88726c?source=copy_link)
 
 Stay up to date with new features and planned improvements in the Notion page: [https://ammiellewb.notion.site/W2W-21eaa4f8c84480af91beeaa2fd88726c?source=copy_link](https://ammiellewb.notion.site/W2W-21eaa4f8c84480af91beeaa2fd88726c?source=copy_link).
-
----
-
-## License
-
-MIT
