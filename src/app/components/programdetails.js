@@ -137,7 +137,7 @@ export default function ProgramDetails({ program, onClose }) {
   const relevantLinks = programData.relevant_links;
 
   return (
-    <div className="h-full overflow-y-auto p-4 bg-transparent">
+    <div className="h-full p-4 bg-transparent">
       <Card className="mb-4">
         <CardHeader className="relative">
           <Button
@@ -387,16 +387,17 @@ export default function ProgramDetails({ program, onClose }) {
                   </span>
                 </div>
                 {showLinks && (
-                  <div className="space-y-1 flex flex-col gap-1 mt-1">
+                  <div className="space-y-1 flex flex-col gap-1 mt-1 w-full">
                     {relevantLinks.map((link, index) => (
                       <a
                         key={index}
                         href={link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-blue-600 hover:text-blue-800 underline inline-flex items-center gap-1 max-w-[300px]"
+                        className="text-sm text-blue-600 hover:text-blue-800 underline w-full block"
+                        style={{wordBreak: 'break-all', overflow: 'hidden', textOverflow: 'ellipsis'}}
                       >
-                        <span className="truncate whitespace-nowrap max-w-[300px] overflow-hidden block">
+                        <span className="truncate block w-full" style={{maxWidth: '100%'}}>
                           {link.replace(/^https?:\/\//, "").replace("www.", "")}
                         </span>
                       </a>

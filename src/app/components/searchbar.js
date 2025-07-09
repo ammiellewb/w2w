@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import AboutModal from './about';
-import supabase from '@/lib/supabaseClient';
+import AboutModal from "./about";
+import supabase from "@/lib/supabaseClient";
 
 const filterCategoryNames = {
   likeliness: "Competitiveness",
@@ -35,8 +35,9 @@ export default function Searchbar({
   setSearchQuery,
   filters,
   setFilters,
+  aboutOpen,
+  setAboutOpen,
 }) {
-  const [aboutOpen, setAboutOpen] = useState(null);
   const [filterOptions, setFilterOptions] = useState({
     likeliness: [],
     type: [],
@@ -138,9 +139,10 @@ export default function Searchbar({
           >
             <HelpCircle className="h-3 w-3" />
             <span className="text-sm">About</span>
-            
           </Button>
-          {aboutOpen && <AboutModal open={aboutOpen} onClose={() => setAboutOpen(null)} />}
+          {aboutOpen && (
+            <AboutModal open={aboutOpen} onClose={() => setAboutOpen(null)} />
+          )}
           {/* <Button 
                     variant="secondary" 
                     size="sm" 
@@ -163,7 +165,18 @@ export default function Searchbar({
                 <span className="text-sm">Filters</span>
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-90">
+            <PopoverContent className="w-90 relative">
+              {isFilterActive && (
+                <Button
+                  variant="danger"
+                  size="icon"
+                  className="absolute top-2 right-2 text-gray-600 hover:text-red-600"
+                  onClick={handleClearAll}
+                  aria-label="Clear All Filters"
+                >
+                  <Trash2 className="h-5 w-5" />
+                </Button>
+              )}
               <div className="grid gap-4">
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">
@@ -214,22 +227,13 @@ export default function Searchbar({
               </div>
             </PopoverContent>
           </Popover>
-          {/* <Button 
-                    variant="secondary" 
-                    size="sm" 
-                    className="flex items-center space-x-1 px-2"
-                >
-                    <Bookmark className="h-3 w-3" />
-                    <span className="text-sm">Saved</span>
-                </Button> */}
           <Button
             variant="secondary"
             size="sm"
-            className="cursor-pointer flex items-center space-x-1 px-2"
-            onClick={handleClearAll}
+            className="flex items-center space-x-1 px-2"
           >
-            <Trash2 className="h-3 w-3" />
-            <span className="text-sm">Clear All</span>
+            <Bookmark className="h-3 w-3" />
+            <span className="text-sm">Saved</span>
           </Button>
         </div>
       </div>

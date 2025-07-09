@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import AboutModal from './components/about';
 
 import Image from "next/image";
 import maplibregl from 'maplibre-gl';
@@ -22,7 +23,7 @@ type ToggleViewButtonProps = {
 };
 function ToggleViewButton({ viewMode, setViewMode }: ToggleViewButtonProps) {
   return (
-    <div className="flex justify-center items-center w-full py-2 bg-transparent z-40">
+    <div className="flex justify-center items-center w-full py-4 bg-transparent z-40">
       <div className="flex rounded-full border border-gray-200 overflow-hidden shadow-md">
         <button
           className={`cursor-pointer flex items-center px-5 py-1 text-sm font-semibold focus:outline-none transition-colors ${viewMode === 'list' ? 'bg-blue-500 text-white' : 'bg-white text-slate-700'}`}
@@ -54,6 +55,7 @@ function useIsMobile() {
     window.addEventListener('resize', checkSize);
     return () => window.removeEventListener('resize', checkSize);
   }, []);
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
@@ -73,11 +75,18 @@ function App() {
   const [displayedCount, setDisplayedCount] = useState(0);
   const { isMobile, hasMounted } = useIsMobile();
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   // Reset viewMode to 'list' if on mobile and a program is closed
   useEffect(() => {
     if (isMobile) setViewMode('list');
   }, [isMobile]);
+
+  // Helper to select a program and switch to map view on mobile
+  const handleSelectProgram = (program: any) => {
+    setSelectedProgram(program);
+    if (isMobile && viewMode !== 'map') setViewMode('map');
+  };
 
   // Prevent layout flash on reload
   if (!hasMounted) return null;
@@ -90,39 +99,54 @@ function App() {
           <div className="fixed inset-0 z-0">
             <Map 
               selectedProgram={selectedProgram} 
-              onProgramSelect={setSelectedProgram} 
+              onProgramSelect={handleSelectProgram} 
               detailsOpen={!!selectedProgram}
             />
+            {/* Add semi-transparent overlay below list view */}
+            {viewMode === 'list' && !selectedProgram && (
+              <div className="absolute inset-0 z-10 pointer-events-none" />
+            )}
           </div>
-          {/* Always show toggle at the top */}
-          <div className="absolute top-0 left-0 right-0 z-30">
-            <ToggleViewButton viewMode={viewMode} setViewMode={setViewMode} />
-          </div>
+          {/* Show toggle only if About modal is not open and no program is selected */}
+          {!aboutOpen && !selectedProgram && (
+            <div className="absolute top-0 left-0 right-0 z-30">
+              <ToggleViewButton
+                viewMode={viewMode}
+                setViewMode={mode => {
+                  if (!selectedProgram) setViewMode(mode);
+                }}
+              />
+            </div>
+          )}
           {selectedProgram ? (
-            <div className="fixed top-10 left-0 right-0 z-20 flex flex-col items-center overflow-y-auto pointer-events-none">
-              <div className="w-full max-w-xl pointer-events-auto" >
+            <div className="fixed top-10 left-0 right-0 z-20 flex flex-col items-center" style={{maxHeight: 'calc(100vh - 32px)', overflowY: 'auto'}}>
+              <div className="w-full max-w-xl pointer-events-auto">
                 <ProgramDetails program={selectedProgram} onClose={() => {
-                  setSelectedProgram(null);
                   setViewMode('map');
+                  setSelectedProgram(null);
                 }} />
               </div>
+              {/* Spacer to push popup to bottom */}
+              <div style={{height: '20vh'}}></div>
             </div>
           ) : viewMode === 'list' ? (
-            <div className="absolute inset-0 z-10 flex flex-col w-full h-full bg-white/90 pt-12">
-              <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} filters={filters} setFilters={setFilters} />
-              <Programs selectedProgram={selectedProgram} setSelectedProgram={setSelectedProgram} searchQuery={searchQuery} filters={filters} setDisplayedCount={setDisplayedCount} />
+            <div className="absolute inset-0 z-10 flex flex-col w-full h-full bg-white/95 pt-12">
+              <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} filters={filters} setFilters={setFilters} aboutOpen={aboutOpen} setAboutOpen={setAboutOpen} />
+              <Programs selectedProgram={selectedProgram} setSelectedProgram={handleSelectProgram} searchQuery={searchQuery} filters={filters} setDisplayedCount={setDisplayedCount} />
               <div className="w-full bg-white border-t border-gray-200 py-2 px-4 text-center shadow-md z-10">
                 <span className="font-medium text-sm text-gray-700">{displayedCount} program{displayedCount === 1 ? '' : 's'} displayed</span>
               </div>
             </div>
           ) : null}
+          {/* About modal (mobile) */}
+          {aboutOpen && <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />}
         </div>
       ) : (
         <div className="flex flex-1 overflow-hidden">
           {/* Left Sidebar */}
           <div className="w-90 bg-white border-r border-gray-200 flex flex-col relative">
-            <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} filters={filters} setFilters={setFilters}  />
-            <Programs selectedProgram={selectedProgram} setSelectedProgram={setSelectedProgram} searchQuery={searchQuery} filters={filters} setDisplayedCount={setDisplayedCount} />
+            <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} filters={filters} setFilters={setFilters} aboutOpen={undefined} setAboutOpen={undefined}  />
+            <Programs selectedProgram={selectedProgram} setSelectedProgram={handleSelectProgram} searchQuery={searchQuery} filters={filters} setDisplayedCount={setDisplayedCount} />
             <div className="absolute bottom-0 left-0 w-full bg-white border-t border-gray-200 py-2 px-4 text-center shadow-md z-10">
               <span className="font-medium text-sm text-gray-700">{displayedCount} program{displayedCount === 1 ? '' : 's'} displayed</span>
             </div>

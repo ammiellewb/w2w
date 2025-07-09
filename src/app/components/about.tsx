@@ -49,7 +49,7 @@ export default function AboutModal({ open, onClose }: AboutModalProps) {
           </a>. Find the right
           program, read honest reviews, and get ready for your adventure abroad.
         </p>
-        <ul className="text-left list-disc pl-5 mb-4 text-gray-700 text-sm space-y-1 break-words w-full whitespace-normal select-text">
+{/*         <ul className="text-left list-disc pl-5 mb-4 text-gray-700 text-sm space-y-1 break-words w-full whitespace-normal select-text">
           <li>
             <span className="font-semibold">Interactive Map:</span> Discover
             exchange programs worldwide.
@@ -78,7 +78,7 @@ export default function AboutModal({ open, onClose }: AboutModalProps) {
             <span className="font-semibold">Helpful Resources:</span> Access key
             links and guides for your journey.
           </li>
-        </ul>
+        </ul> */}
         {/* competitiveness meaning table */}
         <div className="mb-4 w-full select-text">
           <h4 className="text-center font-semibold text-gray-700 mb-2 text-base break-words w-full whitespace-normal">
