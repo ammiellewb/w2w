@@ -145,7 +145,7 @@ function App() {
         <div className="flex flex-1 overflow-hidden">
           {/* Left Sidebar */}
           <div className="w-90 bg-white border-r border-gray-200 flex flex-col relative">
-            <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} filters={filters} setFilters={setFilters} aboutOpen={undefined} setAboutOpen={undefined}  />
+            <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} filters={filters} setFilters={setFilters} aboutOpen={aboutOpen} setAboutOpen={setAboutOpen}  />
             <Programs selectedProgram={selectedProgram} setSelectedProgram={handleSelectProgram} searchQuery={searchQuery} filters={filters} setDisplayedCount={setDisplayedCount} />
             <div className="absolute bottom-0 left-0 w-full bg-white border-t border-gray-200 py-2 px-4 text-center shadow-md z-10">
               <span className="font-medium text-sm text-gray-700">{displayedCount} program{displayedCount === 1 ? '' : 's'} displayed</span>
