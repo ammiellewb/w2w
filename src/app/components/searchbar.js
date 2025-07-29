@@ -9,6 +9,7 @@ import {
   Share2,
   HelpCircle,
   Trash2,
+  Info,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ const filterCategoryNames = {
   faculties: "Faculties",
   languages: "Languages",
   academic_level: "Academic Level",
+  term: "Academic Terms",
 };
 
 export default function Searchbar({
@@ -44,6 +46,7 @@ export default function Searchbar({
     faculties: [],
     languages: [],
     academic_level: [],
+    term: [],
   });
 
   useEffect(() => {
@@ -67,6 +70,9 @@ export default function Searchbar({
           ...new Set(data.flatMap((p) => p.languages || []).filter(Boolean)),
         ],
         academic_level: ["Graduate", "Undergraduate"],
+        term: [
+          ...new Set(data.flatMap((p) => p.term || []).filter(Boolean)),
+        ],
       };
       setFilterOptions(options);
     }
@@ -96,6 +102,7 @@ export default function Searchbar({
       faculty: [],
       type: [],
       academic_level: [],
+      term: [],
     });
   };
 
@@ -188,9 +195,29 @@ export default function Searchbar({
                     ([category, options]) =>
                       options.length > 0 && (
                         <div key={category}>
-                          <h5 className="font-medium text-xs mb-2">
-                            {filterCategoryNames[category]}
-                          </h5>
+                          <div className="flex items-center gap-2 mb-2">
+                            <h5 className="font-medium text-xs">
+                              {filterCategoryNames[category]}
+                            </h5>
+                            {category === "languages" && (
+                              <div className="group relative">
+                                <Info className="h-3 w-3 text-gray-400 cursor-help" />
+                                <div className="absolute left-0 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50 w-52">
+                                  All partner institutions teach in English
+                                  <div className="absolute top-full left-4 border-4 border-transparent border-t-gray-800"></div>
+                                </div>
+                              </div>
+                            )}
+                            {category === "term" && (
+                              <div className="group relative">
+                                <Info className="h-3 w-3 text-gray-400 cursor-help" />
+                                <div className="absolute left-0 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50 w-52">
+                                  Terms at partner institutions don't always align with Waterloo's term schedule
+                                  <div className="absolute top-full left-4 border-4 border-transparent border-t-gray-800"></div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
                           <div className="grid grid-cols-2 gap-2">
                             {options.map((option) => (
                               <div

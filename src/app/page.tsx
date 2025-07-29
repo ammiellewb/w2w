@@ -5,7 +5,7 @@ import AboutModal from './components/about';
 
 import Image from "next/image";
 import maplibregl from 'maplibre-gl';
-import Navbar from './components/navbar.js';
+import Navbar from './components/navbar';
 import Map from './components/map.js';
 import Searchbar from './components/searchbar.js';
 import Programs from './components/programs.js';
@@ -71,6 +71,7 @@ function App() {
     faculties: [],
     type: [],
     academic_level: [],
+    term: [],
   });
   const [displayedCount, setDisplayedCount] = useState(0);
   const { isMobile, hasMounted } = useIsMobile();
@@ -93,8 +94,10 @@ function App() {
 
   return (
     <div className="h-screen flex flex-col bg-gray-50">
+      <Navbar />
+      
       {isMobile ? (
-        <div className="relative w-full h-full flex-1">
+        <div className="relative w-full flex-1">
           {/* Always render map as background */}
           <div className="fixed inset-0 z-0">
             <Map 

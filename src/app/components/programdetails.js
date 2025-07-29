@@ -138,7 +138,7 @@ export default function ProgramDetails({ program, onClose }) {
 
   return (
     <div className="h-full p-4 bg-transparent">
-      <Card className="mb-4">
+      <Card className="mb-4 rounded-lg overflow-y-auto overflow-x-hidden">
         <CardHeader className="relative">
           <Button
             variant="ghost"
@@ -331,6 +331,22 @@ export default function ProgramDetails({ program, onClose }) {
                       </p>
                     </div>
                   )}
+
+                  {programData.term &&
+                    programData.term.length > 0 && (
+                      <div>
+                        <h4 className="font-medium text-sm text-gray-700">
+                          Academic Terms
+                        </h4>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {programData.term.map((termItem) => (
+                            <Badge key={termItem} variant="outline">
+                              {termItem}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                   {programData.programs_available &&
                     programData.programs_available.length > 0 && (
