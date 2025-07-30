@@ -122,15 +122,13 @@ function App() {
             </div>
           )}
           {selectedProgram ? (
-            <div className="fixed top-10 left-0 right-0 z-20 flex flex-col items-center" style={{maxHeight: 'calc(100vh - 32px)', overflowY: 'auto'}}>
-              <div className="w-full max-w-xl pointer-events-auto">
+            <div className="fixed top-10 left-0 right-0 z-20 pointer-events-none">
+              <div className="w-full max-w-xl mx-auto pointer-events-auto" style={{maxHeight: 'calc(60vh)', overflowY: 'auto'}}>
                 <ProgramDetails program={selectedProgram} onClose={() => {
                   setViewMode('map');
                   setSelectedProgram(null);
                 }} />
               </div>
-              {/* Spacer to push popup to bottom */}
-              <div style={{height: '20vh'}}></div>
             </div>
           ) : viewMode === 'list' ? (
             <div className="absolute inset-0 z-10 flex flex-col w-full h-full bg-white/95 pt-12">

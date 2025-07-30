@@ -66,7 +66,7 @@ export default function Map({ selectedProgram, onProgramSelect, detailsOpen }) {
       if (detailsOpen) {
         // on mobile, center the popup above the bottom margin (e.g., 20vh)
         offsetX = 0;
-        offsetY = -window.innerHeight * 0.70; // move up by 70% of viewport height
+        offsetY = -window.innerHeight * 0.8; // move up by 80% of viewport height
       }
       const mapContainer = mapInstance.getContainer();
       const width = mapContainer.offsetWidth;

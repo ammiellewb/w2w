@@ -48,6 +48,7 @@ export default function Searchbar({
     academic_level: [],
     term: [],
   });
+  const [activeTooltip, setActiveTooltip] = useState(null);
 
   useEffect(() => {
     async function fetchFilterOptions() {
@@ -172,19 +173,19 @@ export default function Searchbar({
                 <span className="text-sm">Filters</span>
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-90 relative">
+            <PopoverContent className="w-90 max-h-96 overflow-y-auto relative" sideOffset={5} align="center">
               {isFilterActive && (
                 <Button
                   variant="danger"
                   size="icon"
-                  className="absolute top-2 right-2 text-gray-600 hover:text-red-600"
+                  className="absolute top-2 right-2 text-gray-600 hover:text-red-600 z-10"
                   onClick={handleClearAll}
                   aria-label="Clear All Filters"
                 >
                   <Trash2 className="h-5 w-5" />
                 </Button>
               )}
-              <div className="grid gap-4">
+              <div className="grid gap-4 pr-8">
                 <div className="space-y-2">
                   <p className="text-sm text-muted-foreground">
                     Filter programs by the following criteria.
@@ -201,8 +202,13 @@ export default function Searchbar({
                             </h5>
                             {category === "languages" && (
                               <div className="group relative">
-                                <Info className="h-3 w-3 text-gray-400 cursor-help" />
-                                <div className="absolute left-0 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50 w-52">
+                                <Info 
+                                  className="h-3 w-3 text-gray-400 cursor-help" 
+                                  onClick={() => setActiveTooltip(activeTooltip === 'languages' ? null : 'languages')}
+                                />
+                                <div className={`absolute left-0 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded transition-opacity duration-200 z-50 w-60 ${
+                                  activeTooltip === 'languages' ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                                }`}>
                                   All partner institutions teach in English
                                   <div className="absolute top-full left-4 border-4 border-transparent border-t-gray-800"></div>
                                 </div>
@@ -210,8 +216,13 @@ export default function Searchbar({
                             )}
                             {category === "term" && (
                               <div className="group relative">
-                                <Info className="h-3 w-3 text-gray-400 cursor-help" />
-                                <div className="absolute left-0 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-50 w-52">
+                                <Info 
+                                  className="h-3 w-3 text-gray-400 cursor-help" 
+                                  onClick={() => setActiveTooltip(activeTooltip === 'term' ? null : 'term')}
+                                />
+                                <div className={`absolute left-0 bottom-full mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded transition-opacity duration-200 z-50 w-52 ${
+                                  activeTooltip === 'term' ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                                }`}>
                                   Terms at partner institutions don't always align with Waterloo's term schedule
                                   <div className="absolute top-full left-4 border-4 border-transparent border-t-gray-800"></div>
                                 </div>
