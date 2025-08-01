@@ -23,23 +23,21 @@ type ToggleViewButtonProps = {
 };
 function ToggleViewButton({ viewMode, setViewMode }: ToggleViewButtonProps) {
   return (
-    <div className="flex justify-center items-center w-full py-4 bg-transparent z-40">
-      <div className="flex rounded-full border border-gray-200 overflow-hidden shadow-md">
-        <button
-          className={`cursor-pointer flex items-center px-5 py-1 text-sm font-semibold focus:outline-none transition-colors ${viewMode === 'list' ? 'bg-blue-500 text-white' : 'bg-white text-slate-700'}`}
-          onClick={() => setViewMode('list')}
-        >
-          <AlignJustify className="mr-2" />
-          List
-        </button>
-        <button
-          className={`cursor-pointer flex items-center px-5 py-1 text-sm font-semibold focus:outline-none transition-colors ${viewMode === 'map' ? 'bg-blue-500 text-white' : 'bg-white text-slate-700'}`}
-          onClick={() => setViewMode('map')}
-        >
-          <ButtonMap className="mr-2" />
-          Map
-        </button>
-      </div>
+    <div className="flex rounded-full border border-gray-200 overflow-hidden shadow-md bg-white z-40">
+      <button
+        className={`cursor-pointer flex items-center px-5 py-1 text-sm font-semibold focus:outline-none transition-colors ${viewMode === 'list' ? 'bg-blue-500 text-white' : 'bg-white text-slate-700'}`}
+        onClick={() => setViewMode('list')}
+      >
+        <AlignJustify className="mr-2" />
+        List
+      </button>
+      <button
+        className={`cursor-pointer flex items-center px-5 py-1 text-sm font-semibold focus:outline-none transition-colors ${viewMode === 'map' ? 'bg-blue-500 text-white' : 'bg-white text-slate-700'}`}
+        onClick={() => setViewMode('map')}
+      >
+        <ButtonMap className="mr-2" />
+        Map
+      </button>
     </div>
   );
 }
@@ -112,7 +110,7 @@ function App() {
           </div>
           {/* Show toggle only if About modal is not open and no program is selected */}
           {!aboutOpen && !selectedProgram && (
-            <div className="absolute top-0 left-0 right-0 z-30">
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-30">
               <ToggleViewButton
                 viewMode={viewMode}
                 setViewMode={mode => {
@@ -134,7 +132,7 @@ function App() {
             <div className="absolute inset-0 z-10 flex flex-col w-full h-full bg-white/95 pt-12">
               <Searchbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} filters={filters} setFilters={setFilters} aboutOpen={aboutOpen} setAboutOpen={setAboutOpen} />
               <Programs selectedProgram={selectedProgram} setSelectedProgram={handleSelectProgram} searchQuery={searchQuery} filters={filters} setDisplayedCount={setDisplayedCount} />
-              <div className="w-full bg-white border-t border-gray-200 py-2 px-4 text-center shadow-md z-10">
+              <div className="absolute bottom-0 left-0 w-full bg-white border-t border-gray-200 py-2 px-4 text-center shadow-md z-10">
                 <span className="font-medium text-sm text-gray-700">{displayedCount} program{displayedCount === 1 ? '' : 's'} displayed</span>
               </div>
             </div>
