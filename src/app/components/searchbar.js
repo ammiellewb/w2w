@@ -24,7 +24,7 @@ import AboutModal from "./about";
 import supabase from "@/lib/supabaseClient";
 
 const filterCategoryNames = {
-  likeliness: "Competitiveness",
+  likeliness: "Likelihood",
   type: "Type",
   faculties: "Faculties",
   languages: "Languages",

@@ -229,7 +229,7 @@ export default function ProgramDetails({ program, onClose }) {
               {showDetails && (
                 <div className="space-y-1 flex flex-col gap-1 mt-1">
                   <h4 className="font-medium text-sm text-gray-700">
-                    Competitiveness
+                    Likelihood
                   </h4>
                   <div className="flex items-center gap-2">
                     <Badge
